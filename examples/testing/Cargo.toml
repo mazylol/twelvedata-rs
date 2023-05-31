@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 twelvedata = { path = "../../crates/twelvedata" }
+tokio = { version = "1.28.2", features = ["full"] }

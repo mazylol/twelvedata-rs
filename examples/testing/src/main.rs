@@ -1,5 +1,6 @@
-use twelvedata::add;
+use twelvedata::core::get_realtime_price;
 
-fn main() {
-    println!("Hello, world! {}", add(2, 2));
+#[tokio::main]
+async fn main() {
+    println!("{}", get_realtime_price("AMZN", "TOKEN_HERE").await);
 }
