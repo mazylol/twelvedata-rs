@@ -1,5 +1,12 @@
 pub mod types;
 
+/// Get the realtime price of a stock
+/// ```rust
+/// #[tokio::main]
+/// async fn main() {
+///   println!("{}", get_realtime_price("AMZN", "TOKEN_HERE").await);
+/// }
+/// ```
 pub async fn get_realtime_price(ticker: &str, api_key: &str) -> f32 {
   let response: types::RealtimePrice = reqwest::Client::new()
     .get("https://twelve-data1.p.rapidapi.com/price")
