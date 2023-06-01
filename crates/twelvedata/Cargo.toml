@@ -1,12 +1,12 @@
 [package]
 name = "twelvedata"
-version = "0.2.3"
+version = "0.2.4"
 description = "A Rust client for the Twelve Data API"
 repository = "https://github.com/mazylol/twelvedata-rs"
 readme = "../../README.md"
 keywords = ["twelvedata", "api", "client", "rust"]
 categories = ["api-bindings", "finance"]
-docs = "https://docs.rs/twelvedata"
+documentation = "https://docs.rs/twelvedata"
 authors = ["Landon Porter <mazy@cock.li>"]
 license = "MIT"
 edition = "2021"
