@@ -1,4 +1,10 @@
 pub mod cryptocurrencies;
+pub mod cryptoexchanges;
+pub mod earliesttimestamp;
+pub mod etfs;
+pub mod exchanges;
 pub mod forex;
+pub mod indices;
 pub mod stocks;
+pub mod symbolsearch;
 pub mod types;
