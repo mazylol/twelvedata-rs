@@ -1,4 +1,5 @@
 pub mod core;
+pub mod reference;
 
 pub struct Client {
     pub api_key: String,
