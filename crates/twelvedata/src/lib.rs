@@ -16,7 +16,7 @@
 //! async fn main() {
 //!     let client = Client::new("TOKEN_HERE");
 //!     let price = client.price("AAPL").await;
-//!     println!("{}", price.price);
+//!     println!("{}", price);
 //! }
 //! ```
 //! - Run the program. It should return the current stock price of AAPL.
