@@ -1,6 +1,6 @@
 [package]
 name = "twelvedata"
-version = "0.6.2"
+version = "0.6.3"
 description = "A Rust client for the Twelve Data API"
 repository = "https://github.com/mazylol/twelvedata-rs"
 readme = "../../README.md"
