@@ -1,6 +1,8 @@
-use twelvedata::core::get_realtime_price;
+use twelvedata::Client;
 
 #[tokio::main]
 async fn main() {
-    println!("{}", get_realtime_price("AMZN", "TOKEN_HERE").await);
+    let client = Client::new("TOKEN_HERE");
+
+    println!("{}", client.realtime_price("AMZN").await);
 }
