@@ -5,9 +5,8 @@ use super::types::ExchangeRate;
 impl Client {
     pub async fn exchange_rate(&self, symbol: &str) -> ExchangeRate {
         let response: ExchangeRate = reqwest::Client::new()
-            .get("https://twelve-data1.p.rapidapi.com/exchange_rate")
-            .header("X-RapidAPI-Key", &self.api_key)
-            .header("X-RapidAPI-Host", "twelve-data1.p.rapidapi.com")
+            .get("https://api.twelvedata.com/exchange_rate")
+            .query(&[("apikey", &self.api_key)])
             .query(&[("symbol", symbol)])
             .send()
             .await

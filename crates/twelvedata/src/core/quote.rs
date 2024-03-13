@@ -5,9 +5,8 @@ use super::types::Quote;
 impl Client {
     pub async fn quote(&self, symbol: &str) -> Quote {
         let response: Quote = reqwest::Client::new()
-            .get("https://twelve-data1.p.rapidapi.com/quote")
-            .header("X-RapidAPI-Key", &self.api_key)
-            .header("X-RapidAPI-Host", "twelve-data1.p.rapidapi.com")
+            .get("https://api.twelvedata.com/quote")
+            .query(&[("apikey", &self.api_key)])
             .query(&[("symbol", symbol)])
             .send()
             .await

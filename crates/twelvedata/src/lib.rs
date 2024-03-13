@@ -13,9 +13,9 @@
 //! use twelvedata::Client;
 //!
 //! #[tokio::main]
-//! async fn main() {
+//! async fn example() {
 //!     let client = Client::new("TOKEN_HERE");
-//!     let price = client.price("AAPL").await;
+//!     let price = client.realtime_price("AAPL").await;
 //!     println!("{}", price);
 //! }
 //! ```
@@ -33,13 +33,6 @@ pub mod core;
 pub mod reference;
 
 /// Client for the Twelve Data API
-///
-/// # Example
-/// ```rust
-/// let client = Client::new("TOKEN_HERE");
-/// let price = client.price("AAPL").await;
-/// println!("{}", price.price);
-/// ```
 pub struct Client {
     pub api_key: String,
 }
