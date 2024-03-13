@@ -18,13 +18,14 @@ impl Client {
     }
 }
 
+#[cfg(test)]
 pub mod test {
+    use super::Client;
+    use dotenvy::dotenv;
+    use std::env;
+
     #[tokio::test]
     async fn get_etfs() {
-        use super::Client;
-        use dotenvy::dotenv;
-        use std::env;
-
         dotenv().expect(".env file not found");
 
         let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
