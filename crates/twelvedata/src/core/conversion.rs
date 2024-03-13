@@ -18,3 +18,18 @@ impl Client {
         return response;
     }
 }
+
+pub mod test {
+    #[tokio::test]
+    async fn get_conversion() {
+        use super::Client;
+        use dotenvy::dotenv;
+        use std::env;
+
+        dotenv().expect(".env file not found");
+
+        let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
+
+        let _ = client.currency_conversion("USD/JPY", 12.0).await;
+    }
+}

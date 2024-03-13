@@ -30,6 +30,6 @@ pub mod test {
 
         let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
 
-        let _ = client.realtime_price("AMZN").await;
+        let _ = client.realtime_price("AAPL").await;
     }
 }
