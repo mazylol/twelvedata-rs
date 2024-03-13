@@ -5,9 +5,8 @@ use super::types::SymbolSearch;
 impl Client {
     pub async fn symbol_search(&self, symbol: &str) -> SymbolSearch {
         let response: SymbolSearch = reqwest::Client::new()
-            .get("https://twelve-data1.p.rapidapi.com/symbol_search")
-            .header("X-RapidAPI-Key", &self.api_key)
-            .header("X-RapidAPI-Host", "twelve-data1.p.rapidapi.com")
+            .get("https://api.twelvedata.com/symbol_search")
+            .query(&[("apikey", &self.api_key)])
             .query(&[("symbol", symbol)])
             .send()
             .await
@@ -17,5 +16,20 @@ impl Client {
             .unwrap_or_else(|_| panic!("Error getting symbol search for {}", symbol));
 
         return response;
+    }
+}
+
+pub mod test {
+    #[tokio::test]
+    async fn get_symbol_search() {
+        use super::Client;
+        use dotenvy::dotenv;
+        use std::env;
+
+        dotenv().expect(".env file not found");
+
+        let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
+
+        let _ = client.symbol_search("AA").await;
     }
 }

@@ -3,11 +3,10 @@ use crate::Client;
 use super::types::ForexPairs;
 
 impl Client {
-    pub async fn forex_pairs_list(&self) -> ForexPairs {
+    pub async fn forex_pairs(&self) -> ForexPairs {
         let response: ForexPairs = reqwest::Client::new()
-            .get("https://twelve-data1.p.rapidapi.com/forex_pairs")
-            .header("X-RapidAPI-Key", &self.api_key)
-            .header("X-RapidAPI-Host", "twelve-data1.p.rapidapi.com")
+            .get("https://api.twelvedata.com/forex_pairs")
+            .query(&[("apikey", &self.api_key)])
             .send()
             .await
             .unwrap()
@@ -16,5 +15,20 @@ impl Client {
             .unwrap_or_else(|_| panic!("Error getting forex pairs list"));
 
         return response;
+    }
+}
+
+pub mod test {
+    #[tokio::test]
+    async fn get_forex_pairs() {
+        use super::Client;
+        use dotenvy::dotenv;
+        use std::env;
+
+        dotenv().expect(".env file not found");
+
+        let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
+
+        let _ = client.forex_pairs().await;
     }
 }

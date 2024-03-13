@@ -5,9 +5,8 @@ use super::types::Cryptocurrencies;
 impl Client {
     pub async fn cryptocurrencies(&self) -> Cryptocurrencies {
         let response: Cryptocurrencies = reqwest::Client::new()
-            .get("https://twelve-data1.p.rapidapi.com/cryptocurrencies")
-            .header("X-RapidAPI-Key", &self.api_key)
-            .header("X-RapidAPI-Host", "twelve-data1.p.rapidapi.com")
+            .get("https://api.twelvedata.com/cryptocurrencies")
+            .query(&[("apikey", &self.api_key)])
             .send()
             .await
             .unwrap()
@@ -16,5 +15,20 @@ impl Client {
             .unwrap_or_else(|_| panic!("Error getting cryptocurrencies"));
 
         return response;
+    }
+}
+
+pub mod test {
+    #[tokio::test]
+    async fn get_cryptocurrencies() {
+        use super::Client;
+        use dotenvy::dotenv;
+        use std::env;
+
+        dotenv().expect(".env file not found");
+
+        let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
+
+        let _ = client.cryptocurrencies().await;
     }
 }

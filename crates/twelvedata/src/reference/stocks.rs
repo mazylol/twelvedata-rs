@@ -5,9 +5,8 @@ use super::types::Stocks;
 impl Client {
     pub async fn stocks(&self) -> Stocks {
         let response: Stocks = reqwest::Client::new()
-            .get("https://twelve-data1.p.rapidapi.com/stocks")
-            .header("X-RapidAPI-Key", &self.api_key)
-            .header("X-RapidAPI-Host", "twelve-data1.p.rapidapi.com")
+            .get("https://api.twelvedata.com/stocks")
+            .query(&[("apikey", &self.api_key)])
             .send()
             .await
             .unwrap()
@@ -16,5 +15,20 @@ impl Client {
             .unwrap_or_else(|_| panic!("Error getting stocks"));
 
         return response;
+    }
+}
+
+pub mod test {
+    #[tokio::test]
+    async fn get_stocks() {
+        use super::Client;
+        use dotenvy::dotenv;
+        use std::env;
+
+        dotenv().expect(".env file not found");
+
+        let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
+
+        let _ = client.stocks().await;
     }
 }
