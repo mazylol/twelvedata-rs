@@ -126,3 +126,33 @@ pub struct EarliestTimestamp {
     pub datetime: String,
     pub unix_time: i32,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Access {
+    pub global: String,
+    pub plan: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Fund {
+    pub symbol: String,
+    pub name: String,
+    pub country: String,
+    pub currency: String,
+    pub exchange: String,
+    #[serde(rename = "type")]
+    pub fund_type: String,
+    pub access: Option<Access>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Result {
+    pub count: u32,
+    pub list: Vec<Fund>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Funds {
+    pub result: Result,
+    pub status: String,
+}

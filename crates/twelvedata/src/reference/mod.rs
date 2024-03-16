@@ -4,6 +4,7 @@ pub mod earliesttimestamp;
 pub mod etfs;
 pub mod exchanges;
 pub mod forex;
+mod funds;
 pub mod indices;
 pub mod stocks;
 pub mod symbolsearch;
