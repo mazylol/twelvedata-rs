@@ -76,8 +76,3 @@ pub struct FiftyTwoWeek {
     pub high_change_percent: String,
     pub range: String,
 }
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct RealtimePrice {
-    pub price: String,
-}

@@ -8,31 +8,19 @@
 //!
 //! - First subscribe to the [Twelve Data API](https://rapidapi.com/twelvedata/api/twelve-data1).
 //! - Then create a new client with your API key.
-//!
-//! ```rust
-//! use twelvedata::Client;
-//!
-//! #[tokio::main]
-//! async fn example() {
-//!     let client = Client::new("TOKEN_HERE");
-//!     let price = client.realtime_price("AAPL").await;
-//!     println!("{}", price);
-//! }
-//! ```
-//! - Run the program. It should return the current stock price of AAPL.
-//! - Now you can start using the client to get data from the Twelve Data API.
+//! - Now you can start using the wrapper to get data from the Twelve Data API.
 //!
 //! ## Notes
-//! - You need an async runtime to use this crate. I recommend [tokio](https://tokio.rs/) (as used above).
+//! - You need an async runtime to use this crate. I recommend [tokio](https://tokio.rs/). It is actually what to run async tests.
 //! - This crate is not yet complete. I will be adding more endpoints in the future.
-//! - Paid endpoints are not yet supported. But will be put behind a feature flag when they are.
+//! - Paid endpoints are not yet supported. But will be put behind a feature flag when they are. But this will be difficult as I don't have a paid account to test with.
 
 /// Core Twelve Data
 pub mod core;
 /// Reference Twelve Data
 pub mod reference;
 
-/// Client for the Twelve Data API
+/// Client for the Twelve Data API, slowly being phased out
 pub struct Client {
     pub api_key: String,
 }
