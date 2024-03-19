@@ -2,6 +2,8 @@ use std::error::Error;
 
 use serde::{Deserialize, Serialize};
 
+use crate::internal;
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RealtimePrice {
     pub price: String,
@@ -16,9 +18,7 @@ pub struct RealtimePrice {
     #[serde(skip)]
     type_field: String,
     #[serde(skip)]
-    delimiter: String,
-    #[serde(skip)]
-    api_key: String,
+    apikey: String,
     #[serde(skip)]
     prepost: String,
     #[serde(skip)]
@@ -35,8 +35,7 @@ impl RealtimePrice {
             mic_code: String::new(),
             country: String::new(),
             type_field: String::new(),
-            delimiter: String::new(),
-            api_key: String::new(),
+            apikey: String::new(),
             prepost: String::new(),
             dp: String::new(),
         }
@@ -67,13 +66,8 @@ impl RealtimePrice {
         self
     }
 
-    pub fn delimiter(&mut self, delimiter: &str) -> &mut Self {
-        self.delimiter = delimiter.to_string();
-        self
-    }
-
-    pub fn api_key(&mut self, api_key: &str) -> &mut Self {
-        self.api_key = api_key.to_string();
+    pub fn apikey(&mut self, apikey: &str) -> &mut Self {
+        self.apikey = apikey.to_string();
         self
     }
 
@@ -88,36 +82,18 @@ impl RealtimePrice {
     }
 
     pub async fn execute(&self) -> Result<RealtimePrice, Box<dyn Error>> {
-        let client = reqwest::Client::new();
-
-        let url = format!("https://api.twelvedata.com/price?");
-
         let params = vec![
-            ("apikey", &self.api_key),
+            ("apikey", &self.apikey),
             ("symbol", &self.symbol),
             ("exchange", &self.exchange),
             ("mic_code", &self.mic_code),
             ("country", &self.country),
             ("type", &self.type_field),
-            ("delimiter", &self.delimiter),
             ("prepost", &self.prepost),
             ("dp", &self.dp),
         ];
 
-        let filtered_params: Vec<(&str, &str)> = params
-            .into_iter()
-            .filter(|(_, value)| !value.is_empty())
-            .map(|(key, value)| (key, value.as_str()))
-            .collect();
-
-        let response = client.get(&url).query(&filtered_params).send().await?;
-
-        if response.status().is_success() {
-            let realtime_price = response.json::<RealtimePrice>().await?;
-            Ok(realtime_price)
-        } else {
-            Err(format!("Request failed with status code: {}", response.status()).into())
-        }
+        internal::request::execute("https://api.twelvedata.com/price?", params).await
     }
 }
 
@@ -133,7 +109,7 @@ pub mod test {
 
         let response = RealtimePrice::builder()
             .symbol("AAPL")
-            .api_key(env::var("API_TOKEN").unwrap().as_str())
+            .apikey(&env::var("API_TOKEN").unwrap().as_str())
             .execute()
             .await;
 

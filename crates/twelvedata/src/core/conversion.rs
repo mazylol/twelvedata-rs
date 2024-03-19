@@ -2,6 +2,8 @@ use std::error::Error;
 
 use serde::{Deserialize, Serialize};
 
+use crate::internal;
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CurrencyConversion {
     pub symbol: String,
@@ -11,9 +13,7 @@ pub struct CurrencyConversion {
     #[serde(skip)]
     date: String,
     #[serde(skip)]
-    delimiter: String,
-    #[serde(skip)]
-    api_key: String,
+    apikey: String,
     #[serde(skip)]
     dp: String,
     #[serde(skip)]
@@ -28,8 +28,7 @@ impl CurrencyConversion {
             amount: 0.0,
             timestamp: 0,
             date: String::new(),
-            delimiter: String::new(),
-            api_key: String::new(),
+            apikey: String::new(),
             dp: String::new(),
             timezone: String::new(),
         }
@@ -50,13 +49,8 @@ impl CurrencyConversion {
         self
     }
 
-    pub fn delimiter(&mut self, delimiter: &str) -> &mut Self {
-        self.delimiter = delimiter.to_string();
-        self
-    }
-
-    pub fn api_key(&mut self, api_key: &str) -> &mut Self {
-        self.api_key = api_key.to_string();
+    pub fn apikey(&mut self, apikey: &str) -> &mut Self {
+        self.apikey = apikey.to_string();
         self
     }
 
@@ -71,36 +65,18 @@ impl CurrencyConversion {
     }
 
     pub async fn execute(&self) -> Result<CurrencyConversion, Box<dyn Error>> {
-        let client = reqwest::Client::new();
-
-        let url = format!("https://api.twelvedata.com/currency_conversion?");
-
         let amount = &self.amount.to_string();
 
         let params = vec![
-            ("apikey", &self.api_key),
+            ("apikey", &self.apikey),
             ("symbol", &self.symbol),
             ("amount", amount),
             ("date", &self.date),
-            ("delimiter", &self.delimiter),
             ("dp", &self.dp),
             ("timezone", &self.timezone),
         ];
 
-        let filtered_params: Vec<(&str, &str)> = params
-            .into_iter()
-            .filter(|(_, value)| !value.is_empty())
-            .map(|(key, value)| (key, value.as_str()))
-            .collect();
-
-        let response = client.get(&url).query(&filtered_params).send().await?;
-
-        if response.status().is_success() {
-            let currency_conversion = response.json::<CurrencyConversion>().await?;
-            Ok(currency_conversion)
-        } else {
-            Err(format!("Request failed with status code: {}", response.status()).into())
-        }
+        internal::request::execute("https://api.twelvedata.com/currency_conversion?", params).await
     }
 }
 
@@ -117,7 +93,7 @@ pub mod test {
         let response = CurrencyConversion::builder()
             .symbol("USD/JPY")
             .amount(12.0)
-            .api_key(env::var("API_TOKEN").unwrap().as_str())
+            .apikey(&env::var("API_TOKEN").unwrap())
             .execute()
             .await;
 

@@ -17,6 +17,8 @@
 
 /// Core Twelve Data
 pub mod core;
+// Internal Library Tooling
+mod internal;
 /// Reference Twelve Data
 pub mod reference;
 

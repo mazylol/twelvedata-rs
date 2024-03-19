@@ -1,27 +1,79 @@
-use crate::Client;
+use crate::internal;
 
-use super::types::ExchangeRate;
+use std::error::Error;
 
-impl Client {
-    pub async fn exchange_rate(&self, symbol: &str) -> ExchangeRate {
-        let response: ExchangeRate = reqwest::Client::new()
-            .get("https://api.twelvedata.com/exchange_rate")
-            .query(&[("apikey", &self.api_key)])
-            .query(&[("symbol", symbol)])
-            .send()
-            .await
-            .unwrap()
-            .json()
-            .await
-            .unwrap_or_else(|_| panic!("Error getting exchange rate for {}", symbol));
+use serde::{Deserialize, Serialize};
 
-        return response;
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ExchangeRate {
+    pub symbol: String,
+    pub rate: f32,
+    pub timestamp: u32,
+
+    #[serde(skip)]
+    date: String,
+    #[serde(skip)]
+    apikey: String,
+    #[serde(skip)]
+    dp: String,
+    #[serde(skip)]
+    timezone: String,
+}
+
+impl ExchangeRate {
+    pub fn builder() -> Self {
+        ExchangeRate {
+            symbol: String::new(),
+            rate: 0.0,
+            timestamp: 0,
+            date: String::new(),
+            apikey: String::new(),
+            dp: String::new(),
+            timezone: String::new(),
+        }
+    }
+
+    pub fn symbol(&mut self, symbol: &str) -> &mut Self {
+        self.symbol = symbol.to_string();
+        self
+    }
+
+    pub fn date(&mut self, date: &str) -> &mut Self {
+        self.date = date.to_string();
+        self
+    }
+
+    pub fn apikey(&mut self, apikey: &str) -> &mut Self {
+        self.apikey = apikey.to_string();
+        self
+    }
+
+    pub fn dp(&mut self, dp: &str) -> &mut Self {
+        self.dp = dp.to_string();
+        self
+    }
+
+    pub fn timezone(&mut self, timezone: &str) -> &mut Self {
+        self.timezone = timezone.to_string();
+        self
+    }
+
+    pub async fn execute(&self) -> Result<ExchangeRate, Box<dyn Error>> {
+        let params = vec![
+            ("symbol", &self.symbol),
+            ("date", &self.date),
+            ("apikey", &self.apikey),
+            ("dp", &self.dp),
+            ("timezone", &self.timezone),
+        ];
+
+        internal::request::execute("https://api.twelvedata.com/exchange_rate?", params).await
     }
 }
 
 #[cfg(test)]
 pub mod test {
-    use super::Client;
+    use super::ExchangeRate;
     use dotenvy::dotenv;
     use std::env;
 
@@ -29,8 +81,12 @@ pub mod test {
     async fn get_exchangerate() {
         dotenv().expect(".env file not found");
 
-        let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
+        let response = ExchangeRate::builder()
+            .symbol("USD/JPY")
+            .apikey(&env::var("API_TOKEN").unwrap())
+            .execute()
+            .await;
 
-        let _ = client.exchange_rate("USD/JPY").await;
+        assert!(response.is_ok());
     }
 }
