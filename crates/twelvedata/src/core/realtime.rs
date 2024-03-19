@@ -2,23 +2,11 @@ use std::error::Error;
 
 use serde::{Deserialize, Serialize};
 
-pub struct RealtimePriceBuilder {
-    symbol: String,
-    exchange: String,
-    mic_code: String,
-    country: String,
-    type_field: String,
-    format: String,
-    delimiter: String,
-    api_key: String,
-    prepost: String,
-    dp: String,
-}
-
 /// Builder for the Realtime Price endpoint
-impl RealtimePriceBuilder {
+impl RealtimePrice {
     pub fn builder() -> Self {
-        RealtimePriceBuilder {
+        RealtimePrice {
+            price: String::new(),
             symbol: String::new(),
             exchange: String::new(),
             mic_code: String::new(),
@@ -105,7 +93,7 @@ impl RealtimePriceBuilder {
             .filter(|(_, value)| !value.is_empty())
             .map(|(key, value)| (key, value.as_str()))
             .collect();
-            
+
         let response = client.get(&url).query(&filtered_params).send().await?;
 
         if response.status().is_success() {
@@ -120,11 +108,31 @@ impl RealtimePriceBuilder {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RealtimePrice {
     pub price: String,
+    #[serde(skip)]
+    symbol: String,
+    #[serde(skip)]
+    exchange: String,
+    #[serde(skip)]
+    mic_code: String,
+    #[serde(skip)]
+    country: String,
+    #[serde(skip)]
+    type_field: String,
+    #[serde(skip)]
+    format: String,
+    #[serde(skip)]
+    delimiter: String,
+    #[serde(skip)]
+    api_key: String,
+    #[serde(skip)]
+    prepost: String,
+    #[serde(skip)]
+    dp: String,
 }
 
 #[cfg(test)]
 pub mod test {
-    use super::RealtimePriceBuilder;
+    use super::RealtimePrice;
     use dotenvy::dotenv;
     use std::env;
 
@@ -132,7 +140,7 @@ pub mod test {
     async fn get_stock_price() {
         dotenv().expect(".env file not found");
 
-        let response = RealtimePriceBuilder::builder()
+        let response = RealtimePrice::builder()
             .symbol("AAPL")
             .api_key(env::var("API_TOKEN").unwrap().as_str())
             .execute()
