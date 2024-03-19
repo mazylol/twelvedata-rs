@@ -2,6 +2,29 @@ use std::error::Error;
 
 use serde::{Deserialize, Serialize};
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct RealtimePrice {
+    pub price: String,
+    #[serde(skip)]
+    symbol: String,
+    #[serde(skip)]
+    exchange: String,
+    #[serde(skip)]
+    mic_code: String,
+    #[serde(skip)]
+    country: String,
+    #[serde(skip)]
+    type_field: String,
+    #[serde(skip)]
+    delimiter: String,
+    #[serde(skip)]
+    api_key: String,
+    #[serde(skip)]
+    prepost: String,
+    #[serde(skip)]
+    dp: String,
+}
+
 /// Builder for the Realtime Price endpoint
 impl RealtimePrice {
     pub fn builder() -> Self {
@@ -12,7 +35,6 @@ impl RealtimePrice {
             mic_code: String::new(),
             country: String::new(),
             type_field: String::new(),
-            format: String::new(),
             delimiter: String::new(),
             api_key: String::new(),
             prepost: String::new(),
@@ -42,11 +64,6 @@ impl RealtimePrice {
 
     pub fn type_field(&mut self, type_field: &str) -> &mut Self {
         self.type_field = type_field.to_string();
-        self
-    }
-
-    pub fn format(&mut self, format: &str) -> &mut Self {
-        self.format = format.to_string();
         self
     }
 
@@ -82,7 +99,6 @@ impl RealtimePrice {
             ("mic_code", &self.mic_code),
             ("country", &self.country),
             ("type", &self.type_field),
-            ("format", &self.format),
             ("delimiter", &self.delimiter),
             ("prepost", &self.prepost),
             ("dp", &self.dp),
@@ -103,31 +119,6 @@ impl RealtimePrice {
             Err(format!("Request failed with status code: {}", response.status()).into())
         }
     }
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct RealtimePrice {
-    pub price: String,
-    #[serde(skip)]
-    symbol: String,
-    #[serde(skip)]
-    exchange: String,
-    #[serde(skip)]
-    mic_code: String,
-    #[serde(skip)]
-    country: String,
-    #[serde(skip)]
-    type_field: String,
-    #[serde(skip)]
-    format: String,
-    #[serde(skip)]
-    delimiter: String,
-    #[serde(skip)]
-    api_key: String,
-    #[serde(skip)]
-    prepost: String,
-    #[serde(skip)]
-    dp: String,
 }
 
 #[cfg(test)]

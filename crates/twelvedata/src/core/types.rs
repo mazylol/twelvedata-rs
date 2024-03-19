@@ -37,14 +37,6 @@ pub struct ExchangeRate {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct CurrencyConversion {
-    pub symbol: String,
-    pub rate: f32,
-    pub amount: f32,
-    pub timestamp: i32,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
 pub struct Quote {
     pub symbol: String,
     pub name: String,
