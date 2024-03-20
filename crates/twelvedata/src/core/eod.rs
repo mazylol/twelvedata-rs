@@ -72,6 +72,7 @@ impl EndOfDay {
         self
     }
 
+    #[cfg(feature = "pro")]
     pub fn prepost(&mut self, prepost: &str) -> &mut Self {
         self.prepost = prepost.to_string();
         self
