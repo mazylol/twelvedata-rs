@@ -7,6 +7,7 @@ use crate::internal;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RealtimePrice {
     pub price: String,
+
     #[serde(skip)]
     symbol: String,
     #[serde(skip)]

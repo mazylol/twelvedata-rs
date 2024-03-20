@@ -10,6 +10,7 @@ pub struct CurrencyConversion {
     pub rate: f32,
     pub amount: f32,
     pub timestamp: u32,
+
     #[serde(skip)]
     date: String,
     #[serde(skip)]
