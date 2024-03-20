@@ -4,11 +4,11 @@ pub mod conversion;
 pub mod eod;
 #[cfg(feature = "basic")]
 pub mod exchangerate;
+#[cfg(feature = "pro")]
+pub mod marketmovers;
 #[cfg(feature = "basic")]
 pub mod quote;
 #[cfg(feature = "basic")]
 pub mod realtime;
 #[cfg(feature = "basic")]
 pub mod timeseries;
-#[cfg(feature = "pro")]
-pub mod marketmovers;
