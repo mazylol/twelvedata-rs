@@ -67,7 +67,7 @@ impl ExchangeRate {
             ("timezone", &self.timezone),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/exchange_rate?", params).await
+        internal::request::execute("https://api.twelvedata.com/exchange_rate", params).await
     }
 }
 

@@ -94,7 +94,7 @@ impl RealtimePrice {
             ("dp", &self.dp),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/price?", params).await
+        internal::request::execute("https://api.twelvedata.com/price", params).await
     }
 }
 

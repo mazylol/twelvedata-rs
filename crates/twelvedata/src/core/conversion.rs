@@ -77,7 +77,7 @@ impl CurrencyConversion {
             ("timezone", &self.timezone),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/currency_conversion?", params).await
+        internal::request::execute("https://api.twelvedata.com/currency_conversion", params).await
     }
 }
 
@@ -92,7 +92,7 @@ pub mod test {
         dotenv().expect(".env file not found");
 
         let response = CurrencyConversion::builder()
-            .symbol("USD/JPY")
+            .symbol("EUR/USD")
             .amount(12.0)
             .apikey(&env::var("API_TOKEN").unwrap())
             .execute()

@@ -4,3 +4,4 @@ pub mod exchangerate;
 pub mod quote;
 pub mod realtime;
 pub mod timeseries;
+pub mod marketmovers;

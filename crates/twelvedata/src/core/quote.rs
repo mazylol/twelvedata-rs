@@ -183,7 +183,7 @@ impl Quote {
             ("timezone", &self.timezone),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/quote?", params).await
+        internal::request::execute("https://api.twelvedata.com/quote", params).await
     }
 }
 

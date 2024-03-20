@@ -208,7 +208,7 @@ impl Timeseries {
             ("adjust", &self.adjust),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/time_series?", params).await
+        internal::request::execute("https://api.twelvedata.com/time_series", params).await
     }
 }
 

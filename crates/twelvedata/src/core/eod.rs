@@ -94,7 +94,7 @@ impl EndOfDay {
             ("dp", &self.dp),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/eod?", params).await
+        internal::request::execute("https://api.twelvedata.com/eod", params).await
     }
 }
 
