@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 use crate::internal;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Timeseries {
     pub meta: Meta,
     pub values: Vec<Value>,
@@ -44,7 +44,7 @@ pub struct Timeseries {
     adjust: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Meta {
     pub symbol: String,
     pub interval: String,
@@ -56,7 +56,7 @@ pub struct Meta {
     pub type_field: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Value {
     pub datetime: String,
     pub open: String,

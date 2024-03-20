@@ -2,9 +2,9 @@ use crate::internal;
 
 use std::error::Error;
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct ExchangeRate {
     pub symbol: String,
     pub rate: f32,

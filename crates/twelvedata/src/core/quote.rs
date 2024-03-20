@@ -2,9 +2,9 @@ use crate::internal;
 
 use std::error::Error;
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Quote {
     pub symbol: String,
     pub name: String,
@@ -48,7 +48,7 @@ pub struct Quote {
     timezone: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct FiftyTwoWeek {
     pub low: String,
     pub high: String,

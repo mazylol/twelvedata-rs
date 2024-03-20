@@ -1,10 +1,10 @@
 use std::error::Error;
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 use crate::internal;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct RealtimePrice {
     pub price: String,
 
