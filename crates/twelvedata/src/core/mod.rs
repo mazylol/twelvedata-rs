@@ -1,7 +1,14 @@
+#[cfg(feature = "basic")]
 pub mod conversion;
+#[cfg(feature = "basic")]
 pub mod eod;
+#[cfg(feature = "basic")]
 pub mod exchangerate;
+#[cfg(feature = "basic")]
 pub mod quote;
+#[cfg(feature = "basic")]
 pub mod realtime;
+#[cfg(feature = "basic")]
 pub mod timeseries;
+#[cfg(feature = "pro")]
 pub mod marketmovers;
