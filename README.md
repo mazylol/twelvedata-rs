@@ -26,9 +26,9 @@ I have work to do. This is only on crates.io because I wanted to be sure that th
     - [x] Real-Time Price
     - [x] End of Day Price
     - [x] Market Movers
-- [] Mutual Funds
-- [] Fundmentals
-- [] Analysis
-- [] WebSocket
-- [] Advanced
-- [] Technical Indicators
+- [ ] Mutual Funds
+- [ ] Fundmentals
+- [ ] Analysis
+- [ ] WebSocket
+- [ ] Advanced
+- [ ] Technical Indicators
