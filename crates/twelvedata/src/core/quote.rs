@@ -184,12 +184,12 @@ impl Quote {
             ("timezone", &self.timezone),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/quote", params).await
+        internal::request::execute("/quote", params).await
     }
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use super::Quote;
     use dotenvy::dotenv;
     use std::env;

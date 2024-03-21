@@ -1,7 +1,7 @@
 use std::error::Error;
 
 pub async fn execute<T: serde::de::DeserializeOwned>(
-    url: &str,
+    endpoint: &str,
     params: Vec<(&str, &String)>,
 ) -> Result<T, Box<dyn Error>> {
     let client = reqwest::Client::new();
@@ -11,6 +11,8 @@ pub async fn execute<T: serde::de::DeserializeOwned>(
         .filter(|(_, value)| !value.is_empty())
         .map(|(key, value)| (key, value.as_str()))
         .collect();
+
+    let url = format!("https://api.twelvedata.com{}", endpoint);
 
     let response = client.get(url).query(&filtered_params).send().await?;
 

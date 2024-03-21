@@ -1,35 +1,37 @@
-use crate::Client;
+use std::error::Error;
 
-use super::types::CryptoExchanges;
+use serde::Deserialize;
 
-impl Client {
-    pub async fn crypto_exchanges(&self) -> CryptoExchanges {
-        let response: CryptoExchanges = reqwest::Client::new()
-            .get("https://api.twelvedata.com/cryptocurrency_exchanges")
-            .query(&[("apikey", &self.api_key)])
-            .send()
-            .await
-            .unwrap()
-            .json()
-            .await
-            .unwrap_or_else(|_| panic!("Error getting crypto exchanges"));
+use crate::internal;
 
-        return response;
+#[derive(Deserialize, Debug)]
+pub struct CryptoExchanges {
+    pub data: Vec<CryptoExchange>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct CryptoExchange {
+    pub name: String,
+}
+
+impl CryptoExchanges {
+    pub fn builder() -> Self {
+        CryptoExchanges { data: Vec::new() }
+    }
+
+    pub async fn execute(&self) -> Result<CryptoExchanges, Box<dyn Error>> {
+        internal::request::execute("/cryptocurrency_exchanges", Vec::new()).await
     }
 }
 
 #[cfg(test)]
-pub mod test {
-    use super::Client;
-    use dotenvy::dotenv;
-    use std::env;
+mod test {
+    use super::CryptoExchanges;
 
     #[tokio::test]
     async fn get_crypto_exchanges() {
-        dotenv().expect(".env file not found");
+        let exchanges = CryptoExchanges::builder().execute().await;
 
-        let client = Client::new(env::var("API_TOKEN").unwrap().as_str());
-
-        let _ = client.crypto_exchanges().await;
+        assert!(exchanges.is_ok());
     }
 }

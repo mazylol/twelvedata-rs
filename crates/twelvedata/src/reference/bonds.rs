@@ -5,8 +5,8 @@ use serde::Deserialize;
 use crate::internal;
 
 #[derive(Deserialize, Debug)]
-pub struct Funds {
-    pub result: FundResult,
+pub struct Bonds {
+    pub result: BondResult,
     pub status: String,
 
     #[serde(skip)]
@@ -26,26 +26,26 @@ pub struct Funds {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Fund {
+pub struct Bond {
     pub symbol: String,
     pub name: String,
     pub country: String,
     pub currency: String,
     pub exchange: String,
     #[serde(rename = "type")]
-    pub fund_type: String,
+    pub bond_type: String,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct FundResult {
+pub struct BondResult {
     pub count: u32,
-    pub list: Vec<Fund>,
+    pub list: Vec<Bond>,
 }
 
-impl Funds {
+impl Bonds {
     pub fn builder() -> Self {
-        Funds {
-            result: FundResult {
+        Bonds {
+            result: BondResult {
                 count: 0,
                 list: Vec::new(),
             },
@@ -75,8 +75,8 @@ impl Funds {
         self
     }
 
-    pub fn type_field(&mut self, type_field: &str) -> &mut Self {
-        self.type_field = type_field.to_string();
+    pub fn bond_type(&mut self, bond_type: &str) -> &mut Self {
+        self.type_field = bond_type.to_string();
         self
     }
 
@@ -95,7 +95,7 @@ impl Funds {
         self
     }
 
-    pub async fn execute(&self) -> Result<Funds, Box<dyn Error>> {
+    pub async fn execute(&self) -> Result<Bonds, Box<dyn Error>> {
         let include_delisted = &self.include_delisted.to_string();
         let page = &self.page.to_string();
         let outputsize = &self.outputsize.to_string();
@@ -110,18 +110,18 @@ impl Funds {
             ("outputsize", outputsize),
         ];
 
-        internal::request::execute("/funds", params).await
+        internal::request::execute("/bonds", params).await
     }
 }
 
 #[cfg(test)]
 mod test {
-    use super::Funds;
+    use super::Bonds;
 
     #[tokio::test]
-    async fn get_funds() {
-        let funds = Funds::builder().execute().await;
+    async fn get_bonds() {
+        let bonds = Bonds::builder().execute().await;
 
-        assert!(funds.is_ok());
+        assert!(bonds.is_ok());
     }
 }

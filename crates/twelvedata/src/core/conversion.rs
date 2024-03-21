@@ -77,12 +77,12 @@ impl CurrencyConversion {
             ("timezone", &self.timezone),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/currency_conversion", params).await
+        internal::request::execute("/currency_conversion", params).await
     }
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use super::CurrencyConversion;
     use dotenvy::dotenv;
     use std::env;

@@ -95,12 +95,12 @@ impl RealtimePrice {
             ("dp", &self.dp),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/price", params).await
+        internal::request::execute("/price", params).await
     }
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use super::RealtimePrice;
     use dotenvy::dotenv;
     use std::env;

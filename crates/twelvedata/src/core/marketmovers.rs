@@ -110,35 +110,13 @@ impl MarketMovers {
         ];
 
         match self.mover_type {
-            Type::Stocks => {
-                internal::request::execute(
-                    "https://api.twelvedata.com/market_movers/stocks",
-                    params,
-                )
-                .await
-            }
-            Type::ETF => {
-                internal::request::execute("https://api.twelvedata.com/market_movers/etf", params)
-                    .await
-            }
+            Type::Stocks => internal::request::execute("/market_movers/stocks", params).await,
+            Type::ETF => internal::request::execute("/market_movers/etf", params).await,
             Type::MutualFunds => {
-                internal::request::execute(
-                    "https://api.twelvedata.com/market_movers/mutual_funds",
-                    params,
-                )
-                .await
+                internal::request::execute("/market_movers/mutual_funds", params).await
             }
-            Type::Forex => {
-                internal::request::execute("https://api.twelvedata.com/market_movers/forex", params)
-                    .await
-            }
-            Type::Crypto => {
-                internal::request::execute(
-                    "https://api.twelvedata.com/market_movers/crypto",
-                    params,
-                )
-                .await
-            }
+            Type::Forex => internal::request::execute("/market_movers/forex", params).await,
+            Type::Crypto => internal::request::execute("/market_movers/crypto", params).await,
         }
     }
 }

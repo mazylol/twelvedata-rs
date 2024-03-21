@@ -209,12 +209,12 @@ impl Timeseries {
             ("adjust", &self.adjust),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/time_series", params).await
+        internal::request::execute("/time_series", params).await
     }
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use super::Timeseries;
     use dotenvy::dotenv;
     use std::env;

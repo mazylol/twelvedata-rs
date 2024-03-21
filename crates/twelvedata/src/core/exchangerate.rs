@@ -67,12 +67,12 @@ impl ExchangeRate {
             ("timezone", &self.timezone),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/exchange_rate", params).await
+        internal::request::execute("/exchange_rate", params).await
     }
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use super::ExchangeRate;
     use dotenvy::dotenv;
     use std::env;
@@ -82,7 +82,7 @@ pub mod test {
         dotenv().expect(".env file not found");
 
         let response = ExchangeRate::builder()
-            .symbol("USD/JPY")
+            .symbol("EUR/USD")
             .apikey(&env::var("API_TOKEN").unwrap())
             .execute()
             .await;

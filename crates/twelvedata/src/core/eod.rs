@@ -95,12 +95,12 @@ impl EndOfDay {
             ("dp", &self.dp),
         ];
 
-        internal::request::execute("https://api.twelvedata.com/eod", params).await
+        internal::request::execute("/eod", params).await
     }
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use super::EndOfDay;
     use dotenvy::dotenv;
     use std::env;
