@@ -23,7 +23,7 @@ pub struct RealtimePrice {
     #[serde(skip)]
     prepost: String,
     #[serde(skip)]
-    dp: String,
+    dp: u8,
 }
 
 /// Builder for the Realtime Price endpoint
@@ -38,7 +38,7 @@ impl RealtimePrice {
             type_field: String::new(),
             apikey: String::new(),
             prepost: String::new(),
-            dp: String::new(),
+            dp: 5,
         }
     }
 
@@ -78,12 +78,18 @@ impl RealtimePrice {
         self
     }
 
-    pub fn dp(&mut self, dp: &str) -> &mut Self {
-        self.dp = dp.to_string();
+    pub fn dp(&mut self, dp: u8) -> &mut Self {
+        self.dp = dp;
         self
     }
 
     pub async fn execute(&self) -> Result<RealtimePrice, Box<dyn Error>> {
+        let dp = if self.dp > 11 {
+            5.to_string()
+        } else {
+            self.dp.to_string()
+        };
+
         let params = vec![
             ("apikey", &self.apikey),
             ("symbol", &self.symbol),
@@ -92,7 +98,7 @@ impl RealtimePrice {
             ("country", &self.country),
             ("type", &self.type_field),
             ("prepost", &self.prepost),
-            ("dp", &self.dp),
+            ("dp", &dp),
         ];
 
         internal::request::execute("/price", params).await

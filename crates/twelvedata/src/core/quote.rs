@@ -43,7 +43,7 @@ pub struct Quote {
     #[serde(skip)]
     rolling_period: String,
     #[serde(skip)]
-    dp: String,
+    dp: u8,
     #[serde(skip)]
     timezone: String,
 }
@@ -96,7 +96,7 @@ impl Quote {
             prepost: String::new(),
             eod: String::new(),
             rolling_period: String::new(),
-            dp: String::new(),
+            dp: 5,
             timezone: String::new(),
         }
     }
@@ -157,8 +157,8 @@ impl Quote {
         self
     }
 
-    pub fn dp(&mut self, dp: &str) -> &mut Self {
-        self.dp = dp.to_string();
+    pub fn dp(&mut self, dp: u8) -> &mut Self {
+        self.dp = dp;
         self
     }
 
@@ -168,6 +168,12 @@ impl Quote {
     }
 
     pub async fn execute(&self) -> Result<Quote, Box<dyn Error>> {
+        let dp = if self.dp > 11 {
+            5.to_string()
+        } else {
+            self.dp.to_string()
+        };
+
         let params = vec![
             ("symbol", &self.symbol),
             ("interval", &self.interval),
@@ -180,7 +186,7 @@ impl Quote {
             ("prepost", &self.prepost),
             ("eod", &self.eod),
             ("rolling_period", &self.rolling_period),
-            ("dp", &self.dp),
+            ("dp", &dp),
             ("timezone", &self.timezone),
         ];
 

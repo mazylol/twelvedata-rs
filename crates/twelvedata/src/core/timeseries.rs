@@ -27,7 +27,7 @@ pub struct Timeseries {
     #[serde(skip)]
     prepost: String,
     #[serde(skip)]
-    dp: String,
+    dp: u8,
     #[serde(skip)]
     order: String,
     #[serde(skip)]
@@ -89,7 +89,7 @@ impl Timeseries {
             outputsize: 30,
             apikey: String::new(),
             prepost: String::new(),
-            dp: String::new(),
+            dp: 5,
             order: String::new(),
             timezone: String::new(),
             date: String::new(),
@@ -146,8 +146,8 @@ impl Timeseries {
         self
     }
 
-    pub fn dp(&mut self, dp: &str) -> &mut Self {
-        self.dp = dp.to_string();
+    pub fn dp(&mut self, dp: u8) -> &mut Self {
+        self.dp = dp;
         self
     }
 
@@ -189,6 +189,12 @@ impl Timeseries {
     pub async fn execute(&self) -> Result<Timeseries, Box<dyn std::error::Error>> {
         let outputsize = self.outputsize.to_string();
 
+        let dp = if self.dp > 11 {
+            5.to_string()
+        } else {
+            self.dp.to_string()
+        };
+
         let params = vec![
             ("symbol", &self.symbol),
             ("interval", &self.interval),
@@ -199,7 +205,7 @@ impl Timeseries {
             ("outputsize", &outputsize),
             ("apikey", &self.apikey),
             ("prepost", &self.prepost),
-            ("dp", &self.dp),
+            ("dp", &dp),
             ("order", &self.order),
             ("timezone", &self.timezone),
             ("date", &self.date),

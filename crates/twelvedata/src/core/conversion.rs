@@ -16,7 +16,7 @@ pub struct CurrencyConversion {
     #[serde(skip)]
     apikey: String,
     #[serde(skip)]
-    dp: String,
+    dp: u8,
     #[serde(skip)]
     timezone: String,
 }
@@ -30,7 +30,7 @@ impl CurrencyConversion {
             timestamp: 0,
             date: String::new(),
             apikey: String::new(),
-            dp: String::new(),
+            dp: 5,
             timezone: String::new(),
         }
     }
@@ -55,8 +55,8 @@ impl CurrencyConversion {
         self
     }
 
-    pub fn dp(&mut self, dp: &str) -> &mut Self {
-        self.dp = dp.to_string();
+    pub fn dp(&mut self, dp: u8) -> &mut Self {
+        self.dp = dp;
         self
     }
 
@@ -68,12 +68,18 @@ impl CurrencyConversion {
     pub async fn execute(&self) -> Result<CurrencyConversion, Box<dyn Error>> {
         let amount = &self.amount.to_string();
 
+        let dp = if self.dp > 11 {
+            5.to_string()
+        } else {
+            self.dp.to_string()
+        };
+
         let params = vec![
             ("apikey", &self.apikey),
             ("symbol", &self.symbol),
             ("amount", amount),
             ("date", &self.date),
-            ("dp", &self.dp),
+            ("dp", &dp),
             ("timezone", &self.timezone),
         ];
 

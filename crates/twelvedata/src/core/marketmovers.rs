@@ -35,7 +35,7 @@ pub struct MarketMovers {
     #[serde(skip)]
     apikey: String,
     #[serde(skip)]
-    dp: String,
+    dp: u8,
 
     #[serde(skip)]
     mover_type: Type,
@@ -65,7 +65,7 @@ impl MarketMovers {
             outputsize: String::new(),
             country: String::new(),
             apikey: String::new(),
-            dp: String::new(),
+            dp: 5,
             mover_type: Type::default(),
         }
     }
@@ -90,8 +90,8 @@ impl MarketMovers {
         self
     }
 
-    pub fn dp(&mut self, dp: &str) -> &mut Self {
-        self.dp = dp.to_string();
+    pub fn dp(&mut self, dp: u8) -> &mut Self {
+        self.dp = dp;
         self
     }
 
@@ -101,12 +101,18 @@ impl MarketMovers {
     }
 
     pub async fn execute(&self) -> Result<MarketMovers, Box<dyn Error>> {
+        let dp = if self.dp > 11 {
+            5.to_string()
+        } else {
+            self.dp.to_string()
+        };
+
         let params = vec![
             ("direction", &self.direction),
             ("outputsize", &self.outputsize),
             ("country", &self.country),
             ("apikey", &self.apikey),
-            ("dp", &self.dp),
+            ("dp", &dp),
         ];
 
         match self.mover_type {

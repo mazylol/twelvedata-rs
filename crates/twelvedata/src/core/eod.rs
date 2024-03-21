@@ -22,7 +22,7 @@ pub struct EndOfDay {
     #[serde(skip)]
     prepost: String,
     #[serde(skip)]
-    dp: String,
+    dp: u8,
 }
 
 impl EndOfDay {
@@ -38,7 +38,7 @@ impl EndOfDay {
             type_field: String::new(),
             apikey: String::new(),
             prepost: String::new(),
-            dp: String::new(),
+            dp: 5,
         }
     }
 
@@ -78,12 +78,18 @@ impl EndOfDay {
         self
     }
 
-    pub fn dp(&mut self, dp: &str) -> &mut Self {
-        self.dp = dp.to_string();
+    pub fn dp(&mut self, dp: u8) -> &mut Self {
+        self.dp = dp;
         self
     }
 
     pub async fn execute(&self) -> Result<EndOfDay, Box<dyn Error>> {
+        let dp = if self.dp > 11 {
+            5.to_string()
+        } else {
+            self.dp.to_string()
+        };
+
         let params = vec![
             ("symbol", &self.symbol),
             ("exchange", &self.exchange),
@@ -92,7 +98,7 @@ impl EndOfDay {
             ("type", &self.type_field),
             ("apikey", &self.apikey),
             ("prepost", &self.prepost),
-            ("dp", &self.dp),
+            ("dp", &dp),
         ];
 
         internal::request::execute("/eod", params).await
