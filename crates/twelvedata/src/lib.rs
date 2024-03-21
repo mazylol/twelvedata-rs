@@ -20,7 +20,7 @@
 //!         .apikey("your_api_key")
 //!         .execute()
 //!         .await;
-//! 
+//!
 //!     match end_of_day {
 //!         Ok(eod) => println!("{:?}", eod),
 //!         Err(e) => eprintln!("Error: {}", e),
@@ -33,9 +33,11 @@
 //! - This crate is not yet complete. I will be adding more endpoints in the future.
 //! - Paid endpoints/features are not fully supported. They are in the library, but are not neccessarily guaranteed to work. This is because I do not have a paid subscription to test them.
 
-/// Core Twelve Data
+/// Core Data
 pub mod core;
 // Internal Library Tooling
 mod internal;
 /// Reference Twelve Data
 pub mod reference;
+// Mutal Funds Data
+pub mod mutualfunds;
