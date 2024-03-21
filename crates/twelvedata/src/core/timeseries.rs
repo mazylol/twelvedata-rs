@@ -86,7 +86,7 @@ impl Timeseries {
             mic_code: String::new(),
             country: String::new(),
             type_field: String::new(),
-            outputsize: 0,
+            outputsize: 30,
             apikey: String::new(),
             prepost: String::new(),
             dp: String::new(),
